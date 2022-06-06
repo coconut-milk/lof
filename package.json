@@ -1,0 +1,16 @@
+{
+  "name": "log",
+  "version": "1.0.0",
+  "description": "获取每日基金估值净赚，自动计算当天收益",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index"
+  },
+  "author": "李祥宇",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cheerio": "^1.0.0-rc.11",
+    "superagent": "^7.1.6"
+  }
+}
