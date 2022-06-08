@@ -1,14 +1,18 @@
 const fs = require('fs');
-const { getDate } = require('./utils');
+const { date } = require('./utils');
 
 
 const path = `${__dirname}/dataTemp.json`;
 
 const setTemp = () => {
-  const { curDate, todayTime, curTime } = getDate();
   const list = JSON.parse(fs.readFileSync(`${__dirname}/history.json`));
   const lastDayRow = list[list.length - 1];
   const row = JSON.parse(fs.readFileSync(path));
+  row.isUpdate = row.date === date;
+
+  if (row.isUpdate) {
+    return;
+  }
   row.data.forEach((item) => {
     lastDayRow.data.forEach((lastItem) => {
       if (item.code === lastItem.code) {
@@ -21,8 +25,7 @@ const setTemp = () => {
     })
   });
 
-  row.time = todayTime;
-  row.date = curDate;
+  row.date = date;
 
   fs.writeFileSync(path, JSON.stringify(row));
 };

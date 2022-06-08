@@ -1,0 +1,105 @@
+const fs = require('fs');
+const axios = require('axios');
+const superagent = require("superagent");
+const cheerio = require("cheerio");
+require("./setTemp")();
+const { date } = require('./utils');
+
+const baseUrl = 'http://fundgz.1234567.com.cn/js';
+const realRateUrl = 'http://fund.eastmoney.com';
+const path = `${__dirname}/data.json`;
+const dataTempPath = `${__dirname}/dataTemp.json`;
+const historyPath = `${__dirname}/history.json`;
+
+const update = () => {
+  const row = JSON.parse(fs.readFileSync(path));
+  const temp = JSON.parse(fs.readFileSync(dataTempPath));
+  const historyData = JSON.parse(fs.readFileSync(historyPath));
+
+  // 百分比
+  const rate = 100;
+  // 估值总收益
+  let allEstimatePrice = 0;
+  // 净值总收益
+  let allRealPrice = 0;
+
+  // 当天净值全部更新
+  if (row.data.every(e => e.isUpdate) && row.date === date) {
+    console.log('-------------------- 净值 ---------------------------------------');
+    row.data.forEach(item => {
+      console.log(`${item.name}：${item.realPrice}元`);
+    });
+
+    console.log('-------------------- 收益 ---------------------------------------');
+    console.log(`今日实际收益：${(todayEarnings)}元`);
+    return;
+  }
+
+  // 当天估值收益
+  temp.data.forEach(item => {
+    // 请求天天基金网获取估值
+    axios.get(`${baseUrl}/${item.code}.js?rt=${new Date().getTime()}`)
+      .then(res => {
+        let str = res.data.replace('jsonpgz(', '');
+        str = str.replace(');', '');
+        const { gszzl, name } = JSON.parse(str);
+        item.estimateRate = gszzl;
+        item.name = name;
+        // 净值更新了打印净值
+        if (item.isUpdate) {
+          console.log(`净值：${item.name}：${item.realPrice}`);
+        } else {
+          const curEstimatePrice = parseInt((item.estimateRate / rate * item.basePrice) * 100) / 100;
+          allEstimatePrice = parseInt((allEstimatePrice + curEstimatePrice) * 100) / 100;
+          console.log(`估值：${item.name}：${curEstimatePrice}，rate: ${item.estimateRate}, basePrice: ${item.basePrice}`);
+
+          // 请求天天基金网获取净值
+          superagent.get(`${realRateUrl}/${item.code}.html?spm=search`)
+            .end((err, res) => {
+              if (err) {
+                console.log(`访问失败 - ${err}`)
+              } else {
+                const htmlText = res.text;
+                const $ = cheerio.load(htmlText);
+                const dateText = $('.dataItem02 dt p').text();
+                // 代表更新了净值
+                if (dateText.includes(temp.date)) {
+                  item.realRate = $('.dataItem02 .dataNums .ui-font-middle').text().split('%')[0];
+                  const curRealPrice = parseInt((item.realRate / rate * item.basePrice) * 100) / 100;
+                  // 计算净值
+                  allRealPrice = parseInt((allRealPrice + curRealPrice) * 100) / 100;
+                  if (!item.isUpdate) {
+                    item.realPrice = curRealPrice;
+                    item.basePrice = parseInt((item.basePrice + curRealPrice) * 100) / 100;
+                    item.isUpdate = true;
+                  }
+                }
+              }
+            });
+        }
+
+      })
+  });
+
+  setTimeout(() => {
+    if ( temp.data.every(e => e.isUpdate)) {
+      const writeData = { date, data: temp.data, todayEarnings: allRealPrice };
+      fs.writeFileSync(path, JSON.stringify(writeData));
+      // 存储历史数据
+      const historyDate = historyData.map(e => e.date);
+      if (!historyDate.includes(date)) {
+        historyData.push(writeData);
+        fs.writeFileSync(historyPath, JSON.stringify(historyData));
+      }
+      console.log('-------------------- 收益 ---------------------------------------');
+      console.log(`今日实际收益：${(allRealPrice)}元`);
+
+      return;
+    }
+
+    console.log('-------------------- 收益 ---------------------------------------');
+    console.log(`今日估值收益：${(allEstimatePrice)}元`);
+  }, 2000)
+};
+
+exports.update = update;

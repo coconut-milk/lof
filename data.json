@@ -1,124 +1,114 @@
 {
-  "date": "2022-06-06",
-  "time": 1654473600000,
+  "date": "2022-06-07",
   "data": [
     {
       "code": "005505",
-      "estimateRate": "1.50",
-      "realRate": "1.36",
-      "realPrice": 27.17,
       "basePrice": 2029.78,
       "name": "前海开源中药股票A",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "3.64",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "004855",
-      "estimateRate": "1.44",
-      "realRate": "1.39",
-      "realPrice": 88.62,
       "basePrice": 6442.16,
       "name": "广发中证全指汽车指数C",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "-1.90",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "400015",
-      "estimateRate": "4.36",
-      "realRate": "5.68",
-      "realPrice": 88.90,
       "basePrice": 1653.44,
       "name": "东方新能源汽车混合",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "-0.48",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "005669",
-      "estimateRate": "2.48",
-      "realRate": "2.46",
-      "realPrice": 46.69,
       "basePrice": 1946.19,
       "name": "前海开源公用事业股票",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "-0.97",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "011103",
-      "estimateRate": "4.36",
-      "realRate": "4.37",
-      "realPrice": 307.48,
       "basePrice": 7347.15,
       "name": "天弘中证光伏产业指数C",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "0.38",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "161725",
-      "estimateRate": "1.32",
-      "realRate": "1.29",
-      "realPrice": 138.45,
       "basePrice": 10867.57,
       "name": "招商中证白酒指数(LOF)A",
-      "isUpdate": true
-    },
-    {
-      "code": "001632",
-      "estimateRate": "1.30",
-      "realRate": "1.33",
-      "realPrice": 18.20,
-      "basePrice": 1391.60,
-      "name": "天弘中证食品饮料ETF联接C",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "1.80",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "003096",
-      "estimateRate": "3.86",
-      "realRate": "3.51",
-      "realPrice": 225.80,
-      "basePrice": 6661.10,
+      "basePrice": 6661.1,
       "name": "中欧医疗健康混合C",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "1.87",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "000339",
-      "estimateRate": "3.21",
-      "realRate": "2.99",
-      "realPrice": 117.64,
       "basePrice": 4048.49,
       "name": "长城医疗保健混合A",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "2.01",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "011035",
-      "estimateRate": "3.35",
-      "realRate": "3.35",
-      "realPrice": 187.34,
       "basePrice": 5783.75,
       "name": "嘉实中证稀土产业ETF联接A",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "-0.74",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "005609",
-      "estimateRate": "1.29",
-      "realRate": "1.95",
-      "realPrice": 22.56,
       "basePrice": 1180.55,
       "name": "富国军工主题混合A",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "0.18",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "320007",
-      "estimateRate": "2.03",
-      "realRate": "2.01",
-      "realPrice": 209.09,
       "basePrice": 10598.26,
       "name": "诺安成长混合",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "-1.70",
+      "realRate": 0,
+      "realPrice": 0
     },
     {
       "code": "519674",
-      "estimateRate": "1.46",
-      "realRate": "1.44",
-      "realPrice": 13.44,
       "basePrice": 948.23,
       "name": "银河创新成长混合A",
-      "isUpdate": true
+      "isUpdate": false,
+      "estimateRate": "-2.30",
+      "realRate": 0,
+      "realPrice": 0
     }
   ],
-  "todayEarnings": 1491.38
+  "todayEarnings": 0
 }
