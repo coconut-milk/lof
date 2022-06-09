@@ -14,8 +14,23 @@ const update = () => {
   const date = moment().format('YYYY-MM-DD');
   const temp = JSON.parse(fs.readFileSync(dataTempPath));
   temp.date = date;
+  const yeastDay = moment(date).subtract({ day: 1 }).format('YYYY-MM-DD');
   const historyData = JSON.parse(fs.readFileSync(historyPath));
   const row = historyData[historyData.length - 1];
+
+  if (row.date === yeastDay) {
+    temp.data.forEach(e => {
+      row.data.forEach(item => {
+        if (e.code === item.code) {
+          e.basePrice = item.basePrice;
+          e.isUpdate = false;
+          e.estimateRate = 0;
+          e.realRate = 0;
+          e.realPrice = 0;
+        }
+      })
+    });
+  }
 
   // 百分比
   const rate = 100;
@@ -91,12 +106,6 @@ const update = () => {
         historyData.push(writeData);
         fs.writeFileSync(historyPath, JSON.stringify(historyData));
       }
-      temp.data.forEach(item => {
-        item.estimateRate = 0;
-        item.realRate = 0;
-        item.realPrice = 0;
-        item.isUpdate = false;
-      })
       fs.writeFileSync(dataTempPath, JSON.stringify(temp));
       console.log('-------------------- 收益 ---------------------------------------');
       console.log(`今日实际收益：${(allRealPrice)}元`);
