@@ -7,6 +7,7 @@ const moment = require('moment');
 const baseUrl = 'http://fundgz.1234567.com.cn/js';
 const realRateUrl = 'http://fund.eastmoney.com';
 const dataTempPath = `${__dirname}/dataTemp.json`;
+const estimatePath = `${__dirname}/estimate.json`;
 const historyPath = `${__dirname}/history.json`;
 
 
@@ -58,15 +59,15 @@ const update = () => {
       .then(res => {
         let str = res.data.replace('jsonpgz(', '');
         str = str.replace(');', '');
-        const { gszzl, name } = JSON.parse(str);
+        const { gszzl } = JSON.parse(str);
         item.estimateRate = gszzl;
-        item.name = name;
         // 净值更新了打印净值
         if (item.isUpdate) {
           console.log(`净值：${item.name}：${item.realPrice}`);
         } else {
           const curEstimatePrice = parseInt((item.estimateRate / rate * item.basePrice) * 100) / 100;
           allEstimatePrice = parseInt((allEstimatePrice + curEstimatePrice) * 100) / 100;
+          item.estimatePrice = curEstimatePrice;
           console.log(`估值：${item.name}：${curEstimatePrice}，rate: ${item.estimateRate}, basePrice: ${item.basePrice}`);
 
           // 请求天天基金网获取净值
@@ -111,6 +112,18 @@ const update = () => {
       console.log(`今日实际收益：${(allRealPrice)}元`);
 
       return;
+    } else {
+      const data = {
+        data: temp.data.map(e => ({
+          code: e.code,
+          estimateRate: e.estimateRate + '%',
+          estimatePrice: e.estimatePrice,
+          basePrice: e.basePrice,
+          name: e.name,
+        })),
+        todayEstimateEarnings: allEstimatePrice
+      }
+      fs.writeFileSync(estimatePath, JSON.stringify(data));
     }
 
     console.log('-------------------- 收益 ---------------------------------------');
