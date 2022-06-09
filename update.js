@@ -95,6 +95,7 @@ const update = () => {
         item.estimateRate = 0;
         item.realRate = 0;
         item.realPrice = 0;
+        item.isUpdate = false;
       })
       fs.writeFileSync(dataTempPath, JSON.stringify(temp));
       console.log('-------------------- 收益 ---------------------------------------');
