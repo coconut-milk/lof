@@ -2,19 +2,20 @@ const fs = require('fs');
 const axios = require('axios');
 const superagent = require("superagent");
 const cheerio = require("cheerio");
-require("./setTemp")();
-const { date } = require('./utils');
+const moment = require('moment');
 
 const baseUrl = 'http://fundgz.1234567.com.cn/js';
 const realRateUrl = 'http://fund.eastmoney.com';
-const path = `${__dirname}/data.json`;
 const dataTempPath = `${__dirname}/dataTemp.json`;
 const historyPath = `${__dirname}/history.json`;
 
+
 const update = () => {
-  const row = JSON.parse(fs.readFileSync(path));
+  const date = moment().format('YYYY-MM-DD');
   const temp = JSON.parse(fs.readFileSync(dataTempPath));
+  temp.date = date;
   const historyData = JSON.parse(fs.readFileSync(historyPath));
+  const row = historyData[historyData.length - 1];
 
   // 百分比
   const rate = 100;
@@ -24,14 +25,14 @@ const update = () => {
   let allRealPrice = 0;
 
   // 当天净值全部更新
-  if (row.data.every(e => e.isUpdate) && row.date === date) {
+  if (row.date === date && row.data.every(e => e.isUpdate)) {
     console.log('-------------------- 净值 ---------------------------------------');
     row.data.forEach(item => {
       console.log(`${item.name}：${item.realPrice}元`);
     });
 
     console.log('-------------------- 收益 ---------------------------------------');
-    console.log(`今日实际收益：${(todayEarnings)}元`);
+    console.log(`今日实际收益：${(row.todayEarnings)}元`);
     return;
   }
 
@@ -82,15 +83,20 @@ const update = () => {
   });
 
   setTimeout(() => {
-    if ( temp.data.every(e => e.isUpdate)) {
+    if (temp.data.every(e => e.isUpdate)) {
       const writeData = { date, data: temp.data, todayEarnings: allRealPrice };
-      fs.writeFileSync(path, JSON.stringify(writeData));
       // 存储历史数据
       const historyDate = historyData.map(e => e.date);
       if (!historyDate.includes(date)) {
         historyData.push(writeData);
         fs.writeFileSync(historyPath, JSON.stringify(historyData));
       }
+      temp.data.forEach(item => {
+        item.estimateRate = 0;
+        item.realRate = 0;
+        item.realPrice = 0;
+      })
+      fs.writeFileSync(dataTempPath, JSON.stringify(temp));
       console.log('-------------------- 收益 ---------------------------------------');
       console.log(`今日实际收益：${(allRealPrice)}元`);
 
