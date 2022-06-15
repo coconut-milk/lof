@@ -22,7 +22,7 @@ const update = () => {
   if (row.date === yeastDay) {
     temp.data.forEach(e => {
       row.data.forEach(item => {
-        if (e.code === item.code) {
+        if (e.code === item.code && e.isHold) {
           e.basePrice = item.basePrice;
           e.isUpdate = false;
           e.estimateRate = 0;
@@ -52,8 +52,9 @@ const update = () => {
     return;
   }
 
+  const data = temp.data.filter(e => e.isHold)
   // 当天估值收益
-  temp.data.forEach(item => {
+  data.forEach(item => {
     // 请求天天基金网获取估值
     axios.get(`${baseUrl}/${item.code}.js?rt=${new Date().getTime()}`)
       .then(res => {
@@ -68,7 +69,6 @@ const update = () => {
           const curEstimatePrice = parseInt((item.estimateRate / rate * item.basePrice) * 100) / 100;
           allEstimatePrice = parseInt((allEstimatePrice + curEstimatePrice) * 100) / 100;
           item.estimatePrice = curEstimatePrice;
-          console.log(`估值：${item.name}：${curEstimatePrice}，rate: ${item.estimateRate}, basePrice: ${item.basePrice}`);
 
           // 请求天天基金网获取净值
           superagent.get(`${realRateUrl}/${item.code}.html?spm=search`)
@@ -90,17 +90,22 @@ const update = () => {
                     item.basePrice = parseInt((item.basePrice + curRealPrice) * 100) / 100;
                     item.isUpdate = true;
                   }
+                  console.log(`净值：${item.name}：${curRealPrice}，rate: ${item.realRate}, basePrice: ${item.basePrice}`);
+                } else {
+                  console.log(`估值：${item.name}：${curEstimatePrice}，rate: ${item.estimateRate}, basePrice: ${item.basePrice}`);
                 }
               }
             });
         }
 
+      }).catch((error) => {
+        console.log('报错了', error)
       })
   });
 
   setTimeout(() => {
-    if (temp.data.every(e => e.isUpdate)) {
-      const writeData = { date, data: temp.data, todayEarnings: allRealPrice };
+    if (data.every(e => e.isUpdate)) {
+      const writeData = { date, data, todayEarnings: allRealPrice };
       // 存储历史数据
       const historyDate = historyData.map(e => e.date);
       if (!historyDate.includes(date)) {
@@ -113,8 +118,8 @@ const update = () => {
 
       return;
     } else {
-      const data = {
-        data: temp.data.map(e => ({
+      const row = {
+        data: data.map(e => ({
           code: e.code,
           estimateRate: e.estimateRate + '%',
           estimatePrice: e.estimatePrice,
@@ -123,7 +128,7 @@ const update = () => {
         })),
         todayEstimateEarnings: allEstimatePrice
       }
-      fs.writeFileSync(estimatePath, JSON.stringify(data));
+      fs.writeFileSync(estimatePath, JSON.stringify(row));
     }
 
     console.log('-------------------- 收益 ---------------------------------------');

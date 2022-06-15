@@ -1,113 +1,137 @@
 {
-  "date": "2022-06-09",
+  "date": "2022-06-14",
   "data": [
     {
       "code": "005505",
-      "basePrice": 2081.1,
+      "basePrice": 2091.04,
       "name": "前海开源中药股票A",
-      "isUpdate": false,
-      "estimateRate": "-0.94",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "-0.36",
+      "realRate": "-0.49",
+      "realPrice": -10.29,
+      "estimatePrice": -7.56
     },
     {
       "code": "004855",
-      "basePrice": 7028.24,
+      "basePrice": 7481.34,
       "name": "广发中证全指汽车指数C",
-      "isUpdate": false,
-      "estimateRate": "-1.35",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": false,
+      "estimateRate": "3.16",
+      "realRate": "3.07",
+      "realPrice": 222.83,
+      "estimatePrice": 229.36
     },
     {
       "code": "400015",
-      "basePrice": 1674.11,
+      "basePrice": 1727.81,
       "name": "东方新能源汽车混合",
-      "isUpdate": false,
-      "estimateRate": "-1.57",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "-0.23",
+      "realRate": "-0.33",
+      "realPrice": -5.72,
+      "estimatePrice": -3.98
     },
     {
       "code": "005669",
-      "basePrice": 1935.62,
+      "basePrice": 1952.69,
       "name": "前海开源公用事业股票",
-      "isUpdate": false,
-      "estimateRate": "-0.78",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "0.90",
+      "realRate": "1.02",
+      "realPrice": 19.71,
+      "estimatePrice": 17.39
     },
     {
       "code": "011103",
-      "basePrice": 7353.54,
+      "basePrice": 8439.04,
       "name": "天弘中证光伏产业指数C",
-      "isUpdate": false,
-      "estimateRate": "0.38",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "-1.61",
+      "realRate": "-1.60",
+      "realPrice": -120.94,
+      "estimatePrice": -121.69
     },
     {
       "code": "161725",
-      "basePrice": 11253.4,
+      "basePrice": 11085.7,
       "name": "招商中证白酒指数(LOF)A",
-      "isUpdate": false,
-      "estimateRate": "-1.03",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "0.94",
+      "realRate": "0.90",
+      "realPrice": 98.88,
+      "estimatePrice": 103.27
     },
     {
       "code": "003096",
-      "basePrice": 6941.64,
+      "basePrice": 6743.69,
       "name": "中欧医疗健康混合C",
-      "isUpdate": false,
-      "estimateRate": "-1.11",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "0.65",
+      "realRate": "0.04",
+      "realPrice": 2.69,
+      "estimatePrice": 43.81
     },
     {
       "code": "000339",
-      "basePrice": 4163.7,
+      "basePrice": 4075.89,
       "name": "长城医疗保健混合A",
-      "isUpdate": false,
-      "estimateRate": "-1.24",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "0.04",
+      "realRate": "-0.24",
+      "realPrice": -9.8,
+      "estimatePrice": 1.63
     },
     {
       "code": "011035",
-      "basePrice": 9886.25,
+      "basePrice": 10323.94,
       "name": "嘉实中证稀土产业ETF联接A",
-      "isUpdate": false,
-      "estimateRate": "-0.17",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "0.45",
+      "realRate": "0.45",
+      "realPrice": 46.24,
+      "estimatePrice": 46.24
     },
     {
       "code": "005609",
-      "basePrice": 1159.95,
+      "basePrice": 1149.88,
       "name": "富国军工主题混合A",
-      "isUpdate": false,
-      "estimateRate": "-1.28",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "-1.97",
+      "realRate": "-2.51",
+      "realPrice": -29.6,
+      "estimatePrice": -23.23
     },
     {
       "code": "320007",
-      "basePrice": 10408.57,
+      "basePrice": 9787.3,
       "name": "诺安成长混合",
-      "isUpdate": false,
-      "estimateRate": "-1.97",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "-1.82",
+      "realRate": "-2.16",
+      "realPrice": -216.07,
+      "estimatePrice": -182.06
     },
     {
       "code": "519674",
-      "basePrice": 1427.25,
+      "basePrice": 6172.51,
       "name": "银河创新成长混合A",
-      "isUpdate": false,
-      "estimateRate": "-2.00",
-      "realRate": 0,
-      "realPrice": 0
+      "isUpdate": true,
+      "isHold": true,
+      "estimateRate": "-2.85",
+      "realRate": "-2.92",
+      "realPrice": -185.65,
+      "estimatePrice": -181.2
     }
   ],
   "todayEarnings": 0
