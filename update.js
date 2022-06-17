@@ -10,7 +10,6 @@ const dataTempPath = `${__dirname}/dataTemp.json`;
 const estimatePath = `${__dirname}/estimate.json`;
 const historyPath = `${__dirname}/history.json`;
 
-
 const update = () => {
   const date = moment().format('YYYY-MM-DD');
   const temp = JSON.parse(fs.readFileSync(dataTempPath));
@@ -56,49 +55,56 @@ const update = () => {
   const flag = moment().format('HH') >= 22;
 
   let axiosList = [];
-  // 当天估值收益
-  data.forEach((item, index) => {
-    // 请求天天基金网获取估值
-    axiosList.push(axios.get(`${baseUrl}/${item.code}.js?rt=${new Date().getTime()}`)
-      .then(result => {
-        let str = result.data.replace('jsonpgz(', '');
+
+  // 循环天天基金发请求
+  data.forEach((item) => {
+    axiosList.push(!flag ? getEstimatePrice(item) : getRealPrice(item));
+  });
+
+  // 请求天天基金网获取估值
+  function getEstimatePrice(item) {
+    return axios.get(`${baseUrl}/${item.code}.js?rt=${new Date().getTime()}`)
+      .then(res => {
+        let str = res.data.replace('jsonpgz(', '');
         str = str.replace(');', '');
         const { gszzl } = JSON.parse(str);
         item.estimateRate = gszzl;
         const curEstimatePrice = parseInt((item.estimateRate / rate * item.basePrice) * 100) / 100;
         allEstimatePrice = parseInt((allEstimatePrice + curEstimatePrice) * 100) / 100;
         item.estimatePrice = curEstimatePrice;
-        
-        if (flag) {
-          // 请求天天基金网获取净值
-          superagent.get(`${realRateUrl}/${item.code}.html?spm=search`)
-          .end((err, res) => {
-            if (err) {
-              console.log(`访问失败 - ${err}`)
-            } else {
-              const htmlText = res.text;
-              const $ = cheerio.load(htmlText);
-              const dateText = $('.dataItem02 dt p').text();
-              // 代表更新了净值
-              if (dateText.includes(temp.date)) {
-                item.realRate = $('.dataItem02 .dataNums .ui-font-middle').text().split('%')[0];
-                const curRealPrice = parseInt((item.realRate / rate * item.basePrice) * 100) / 100;
-                // 计算净值
-                allRealPrice = parseInt((allRealPrice + curRealPrice) * 100) / 100;
-                if (!item.isUpdate) {
-                  item.realPrice = curRealPrice;
-                  item.basePrice = parseInt((item.basePrice + curRealPrice) * 100) / 100;
-                  item.isUpdate = true;
-                }
-              }
+      })
+  }
+  // 请求天天基金网获取净值
+  function getRealPrice(item) {
+    return new Promise((resolve, reject) => {
+      superagent.get(`${realRateUrl}/${item.code}.html?spm=search`)
+      .end((err, res) => {
+        if (err) {
+          console.log(`访问失败 - ${err}`)
+          reject(err);
+        } else {
+          const htmlText = res.text;
+          const $ = cheerio.load(htmlText);
+          const dateText = $('.dataItem02 dt p').text();
+          // 代表更新了净值
+          if (dateText.includes(temp.date)) {
+            item.realRate = $('.dataItem02 .dataNums .ui-font-middle').text().split('%')[0];
+            const curRealPrice = parseInt((item.realRate / rate * item.basePrice) * 100) / 100;
+            // 计算净值
+            allRealPrice = parseInt((allRealPrice + curRealPrice) * 100) / 100;
+            if (!item.isUpdate) {
+              item.realPrice = curRealPrice;
+              item.basePrice = parseInt((item.basePrice + curRealPrice) * 100) / 100;
+              item.isUpdate = true;
             }
-          });
+          }
+          resolve(res.text);
         }
-      }));
+      })
+    });
+  }
 
-  });
-
-  Promise.all(axiosList).then(res => {
+  Promise.all(axiosList).then(() => {
     if (data.every(e => e.isUpdate)) {
       const writeData = { date, data, todayEarnings: allRealPrice };
       // 存储历史数据
@@ -108,6 +114,7 @@ const update = () => {
         fs.writeFileSync(historyPath, JSON.stringify(historyData));
       }
       fs.writeFileSync(dataTempPath, JSON.stringify(temp));
+
       data.forEach((item) => {
         console.log(`rate: ${item.realRate}, 净值：${item.realPrice}, ${item.name}, basePrice: ${item.basePrice}`);
       })
@@ -128,6 +135,7 @@ const update = () => {
       }
       fs.writeFileSync(estimatePath, JSON.stringify(row));
     }
+
     data.forEach((item) => {
       console.log(`rate: ${item.estimateRate}, 估值：${item.estimatePrice}, ${item.name}, basePrice: ${item.basePrice}`);
     })
