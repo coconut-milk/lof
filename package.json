@@ -4,7 +4,9 @@
   "description": "获取每日基金估值净赚，自动计算当天收益",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node index.js",
+    "manualUpdate": "node manualUpdate.js",
+    "server": "node app.js"
   },
   "author": "李祥宇",
   "license": "ISC",

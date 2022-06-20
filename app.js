@@ -12,11 +12,10 @@ rule.second = 0;
 // rule.minute = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]; // 每隔 5 分钟执行一次
 // rule.second = 0;//每分钟的0秒执行
 
-// // 启动任务
-// let job = schedule.scheduleJob(rule, () => {
-//   console.log(new Date());
-// });
 const job = schedule.scheduleJob(rule, function(){
-  update();
-  console.log('The answer to life, the universe, and everything!' + moment().format('YYYY-MM-DD HH:mm:ss'));
+  update().then(() => {
+    console.log(`自动更新时间${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+  }).catch((err) => {
+    console.log(err);
+  });
 });
