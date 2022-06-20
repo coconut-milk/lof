@@ -47,7 +47,7 @@ const update = () => {
     });
 
     console.log('-------------------- 收益 ---------------------------------------');
-    console.log(`今日实际收益：${(row.todayEarnings)}元`);
+    console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}实际收益：${(row.todayEarnings)}元`);
     return;
   }
 
@@ -119,7 +119,7 @@ const update = () => {
         console.log(`rate: ${item.realRate}, 净值：${item.realPrice}, ${item.name}, basePrice: ${item.basePrice}`);
       })
       console.log('-------------------- 收益 ---------------------------------------');
-      console.log(`今日实际收益：${(allRealPrice)}元`);
+      console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}实际收益：${(allRealPrice)}元`);
 
       return;
     } else {
@@ -141,7 +141,7 @@ const update = () => {
     })
 
     console.log('-------------------- 收益 ---------------------------------------');
-    console.log(`今日估值收益：${(allEstimatePrice)}元 ${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+    console.log(`${moment().format('YYYY-MM-DD HH:mm:ss')}估值收益：${(allEstimatePrice)}元 `);
   });
 
 };
